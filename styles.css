@@ -1,0 +1,96 @@
+/* Раскладка: слева телефон 360 px, справа карточка идеи; на узком экране в одну колонку. */
+:root {
+  --bg: #eef2ef;
+  --surface: #ffffff;
+  --fg: #19231d;
+  --muted: #5d6b62;
+  --line: #d7dfd9;
+  --accent: #009e36;
+  --accent-fg: #ffffff;
+  --warm: #c9392c;
+  --font-body: "Onest", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --s: 1;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131a16; --surface: #1c2520; --fg: #eaf1ec; --muted: #9db0a4;
+    --line: #2e3b33; --accent: #31cd61; --accent-fg: #0c1a11; --warm: #ff7a6b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131a16; --surface: #1c2520; --fg: #eaf1ec; --muted: #9db0a4;
+  --line: #2e3b33; --accent: #31cd61; --accent-fg: #0c1a11; --warm: #ff7a6b;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 15px/1.5 var(--font-body);
+}
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding-block: 32px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.eyebrow { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0 0 8px; font-size: 32px; line-height: 1.15; font-weight: 600; letter-spacing: -.02em; text-wrap: balance; }
+.sub { margin: 0 0 24px; color: var(--muted); max-width: 60ch; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.tabs button {
+  font: inherit; font-size: 14px; color: var(--fg);
+  background: transparent; border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px; min-height: 40px; cursor: pointer;
+}
+.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.tabs button:focus-visible, .replay:focus-visible, .hit:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.stage { display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-start; }
+.phone-wrap { width: calc(360px * var(--s)); flex: none; }
+.phone {
+  position: relative; width: 360px; height: 800px; overflow: hidden;
+  background: #fff; border: 1px solid var(--line); border-radius: 0;
+  transform: scale(var(--s)); transform-origin: 0 0;
+}
+.phone .bg { position: absolute; left: 0; top: 0; width: 360px; display: block; max-width: none; }
+.layer { position: absolute; inset: 0; pointer-events: none; }
+.layer > * { position: absolute; }
+.layer .hit { pointer-events: auto; background: transparent; border: 0; padding: 0; cursor: pointer; }
+.layer canvas { pointer-events: none; }
+
+.info { flex: 1 1 320px; min-width: 0; max-width: 520px; display: flex; flex-direction: column; gap: 16px; }
+.info h2 { margin: 0; font-size: 22px; line-height: 1.2; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+.info dl { margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 10px 16px; }
+.info dt { color: var(--muted); font-size: 13px; padding-top: 2px; }
+.info dd { margin: 0; }
+.timing { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.timing th, .timing td { text-align: left; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--line); }
+.timing th { color: var(--muted); font-weight: 400; }
+.table-scroll { overflow-x: auto; }
+.replay {
+  align-self: flex-start; font: inherit; font-size: 14px; min-height: 44px;
+  padding: 10px 20px; border-radius: 12px; cursor: pointer;
+  background: var(--surface); color: var(--fg); border: 1px solid var(--line);
+}
+.replay:disabled { opacity: .5; cursor: default; }
+.note { color: var(--muted); font-size: 13px; margin: 0; }
+.toast {
+  left: 16px; right: 16px; bottom: 90px; padding: 10px 14px; border-radius: 12px;
+  background: #19231d; color: #fff; font-size: 13px; text-align: center; opacity: 0;
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 26px; }
+  .info dl { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .info dd { margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto; }
+}
